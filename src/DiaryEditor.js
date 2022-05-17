@@ -1,9 +1,23 @@
 import { useState } from "react";
 
 const DiaryEditor = () => {
-  const [author, setAuthor] = useState("");
-  //[현재 상태, setter함수] = 초깃값
-  const [content, setContent] = useState("");
+  const [state, setState] = useState({
+    author: "",
+    content: "",
+    emotion: 1,
+  });
+
+  const handleChangeState = (e) => {
+    setState({
+      ...state,
+      [e.target.name]: e.target.value,
+    });
+  };
+
+  const handleSubmit = () => {
+    console.log(state);
+    alert("저장 성공");
+  };
 
   return (
     <div className="DiaryEditor">
@@ -11,20 +25,33 @@ const DiaryEditor = () => {
       <div>
         <input
           name="author"
-          value={author}
-          onChange={(e) => {
-            setAuthor(e.target.value);
-          }}
+          value={state.author}
+          onChange={handleChangeState}
         />
       </div>
       <div>
         <textarea
           name="content"
-          value={content}
-          onChange={(e) => {
-            setContent(e.target.value);
-          }}
+          value={state.content}
+          onChange={handleChangeState}
         />
+      </div>
+      <div>
+        <a>오늘의 감정점수 : </a>
+        <select
+          name="emotion"
+          value={state.emotion}
+          onChange={handleChangeState}
+        >
+          <option value={1}>1</option>
+          <option value={2}>2</option>
+          <option value={3}>3</option>
+          <option value={4}>4</option>
+          <option value={5}>5</option>
+        </select>
+      </div>
+      <div>
+        <button onClick={handleSubmit}>일기 저장하기</button>
       </div>
     </div>
   );
