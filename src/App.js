@@ -3,30 +3,6 @@ import "./App.css";
 import DiaryEditor from "./DiaryEditor";
 import DiaryList from "./DiaryList";
 
-// const dummyList = [
-//   {
-//     id: 1,
-//     author: "홍제섭",
-//     content: "아자아자",
-//     emotion: 5,
-//     created_date: new Date().getTime(),
-//   },
-//   {
-//     id: 2,
-//     author: "노영훈",
-//     content: "아자아자",
-//     emotion: 4,
-//     created_date: new Date().getTime(),
-//   },
-//   {
-//     id: 3,
-//     author: "정성운",
-//     content: "아자아자",
-//     emotion: 3,
-//     created_date: new Date().getTime(),
-//   },
-// ];
-
 function App() {
   const [data, setData] = useState([]);
   // 일기가 없으니 빈 배열로 출발
@@ -46,10 +22,16 @@ function App() {
     setData([newItem, ...data]);
   };
 
+  const onDelete = (targetId) => {
+    console.log(`${targetId}가 삭제되었습니다.`);
+    const newDiaryList = data.filter((it) => it.id !== targetId);
+    setData(newDiaryList);
+  };
+
   return (
     <div className="App">
       <DiaryEditor onCreate={onCreate} />
-      <DiaryList diaryList={data} />
+      <DiaryList onDelete={onDelete} diaryList={data} />
     </div>
   );
 }
