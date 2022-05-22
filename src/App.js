@@ -1,4 +1,10 @@
-import { useCallback, useEffect, useMemo, useReducer, useRef } from "react";
+import React, {
+  useCallback,
+  useEffect,
+  useMemo,
+  useReducer,
+  useRef,
+} from "react";
 import "./App.css";
 import DiaryEditor from "./DiaryEditor";
 import DiaryList from "./DiaryList";
@@ -29,10 +35,11 @@ const reducer = (state, action) => {
   }
 };
 
-const App = () => {
-  // const [data, setData] = useState([]);
-  // 일기가 없으니 빈 배열로 출발
+export const DiaryStateContext = React.createContext();
 
+export const DiaryDispatchContext = React.createContext();
+
+const App = () => {
   const [data, dispatch] = useReducer(reducer, []);
   const dataId = useRef(0);
 
@@ -76,6 +83,11 @@ const App = () => {
     dispatch({ type: "EDIT", targetId, newContent });
   }, []);
 
+  const memoizedDispathces = useMemo(() => {
+    return { onCreate, onRemove, onEdit };
+  }, []);
+  // 절대 재생성될 일 없도록 빈 배열을 댑스로!
+
   const getDiaryAnalysis = useMemo(() => {
     if (data.length === 0) {
       return { goodcount: 0, badCount: 0, goodRatio: 0 };
@@ -92,14 +104,18 @@ const App = () => {
   // useMemo로 함수를 최적화하면 memoizedValue는 더이상 함수가 아니게 됨으로, 함수호출이 아닌 값 호출로 사용해야함.
 
   return (
-    <div className="App">
-      <DiaryEditor onCreate={onCreate} />
-      <div>전체 일기 : {data.length}</div>
-      <div>기분 좋은 일기 개수 : {goodCount}</div>
-      <div>기분 나쁜 일기 개수 : {badCount}</div>
-      <div>기분 좋은 일기 비율 : {goodRatio}</div>
-      <DiaryList onEdit={onEdit} onRemove={onRemove} diaryList={data} />
-    </div>
+    <DiaryStateContext.Provider value={data}>
+      <DiaryDispatchContext.Provider value={memoizedDispathces}>
+        <div className="App">
+          <DiaryEditor />
+          <div>전체 일기 : {data.length}</div>
+          <div>기분 좋은 일기 개수 : {goodCount}</div>
+          <div>기분 나쁜 일기 개수 : {badCount}</div>
+          <div>기분 좋은 일기 비율 : {goodRatio}</div>
+          <DiaryList />
+        </div>
+      </DiaryDispatchContext.Provider>
+    </DiaryStateContext.Provider>
   );
 };
 
