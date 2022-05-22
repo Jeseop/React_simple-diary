@@ -6,7 +6,6 @@ import DiaryList from "./DiaryList";
 const App = () => {
   const [data, setData] = useState([]);
   // 일기가 없으니 빈 배열로 출발
-
   const dataId = useRef(0);
 
   const getData = async () => {
@@ -60,6 +59,11 @@ const App = () => {
   }, []);
 
   const getDiaryAnalysis = useMemo(() => {
+    if (data.length === 0) {
+      return { goodcount: 0, badCount: 0, goodRatio: 0 };
+    }
+    console.log("일기 분석 시작");
+
     const goodCount = data.filter((it) => it.emotion >= 3).length;
     const badCount = data.length - goodCount;
     const goodRatio = (goodCount / data.length) * 100;

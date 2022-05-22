@@ -21,7 +21,7 @@ const DiaryItem = ({
   const [localContent, setLocalContent] = useState(content);
   const localContentInput = useRef();
 
-  const handleRemove = () => {
+  const handleClickRemove = () => {
     if (window.confirm(`${id}번째 일기를 정말 삭제하시겠습니까?`)) {
       onRemove(id);
     }
@@ -75,7 +75,7 @@ const DiaryItem = ({
         </>
       ) : (
         <>
-          <button onClick={handleRemove}>삭제하기</button>
+          <button onClick={handleClickRemove}>삭제하기</button>
           <button onClick={toggleIsEdit}>수정하기</button>
         </>
       )}
