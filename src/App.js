@@ -46,19 +46,18 @@ const App = () => {
     // 함수형 업데이트
   }, []);
 
-  const onRemove = (targetId) => {
+  const onRemove = useCallback((targetId) => {
     //어떤 아이디를 지우기를 원하는지
-    const newDiaryList = data.filter((it) => it.id !== targetId);
-    setData(newDiaryList);
-  };
-
-  const onEdit = (targetId, newContent) => {
-    setData(
+    setData((data) => data.filter((it) => it.id !== targetId));
+  }, []);
+  // 데이터를 전달하여, 데이터를 리턴하는 방식.
+  const onEdit = useCallback((targetId, newContent) => {
+    setData((data) =>
       data.map((it) =>
         it.id === targetId ? { ...it, content: newContent } : it
       )
     );
-  };
+  }, []);
 
   const getDiaryAnalysis = useMemo(() => {
     const goodCount = data.filter((it) => it.emotion >= 3).length;

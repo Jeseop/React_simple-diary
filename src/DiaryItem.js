@@ -1,4 +1,4 @@
-import { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 
 const DiaryItem = ({
   onEdit,
@@ -9,9 +9,12 @@ const DiaryItem = ({
   emotion,
   id,
 }) => {
+  useEffect(() => {
+    console.log(`${id}번째 아이템 렌더!`);
+  });
+
   const [isEdit, setIsEdit] = useState(false);
   // 현재 상태, Setter함수
-
   const toggleIsEdit = () => setIsEdit(!isEdit);
   // 토글이란 하나의 설정 값으로부터 다른 값으로 전환하는 것
 
@@ -80,4 +83,5 @@ const DiaryItem = ({
   );
 };
 
-export default DiaryItem;
+export default React.memo(DiaryItem);
+// 최적화의 시작은 React.memo로 컴포넌트를 묶는 것.
